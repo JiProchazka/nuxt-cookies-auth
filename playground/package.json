@@ -8,6 +8,10 @@
     "generate": "nuxi generate"
   },
   "devDependencies": {
-    "nuxt": "latest"
+    "nuxt": "latest",
+    "@types/uuid": "^9.0.4"
+  },
+  "dependencies": {
+    "uuid": "^9.0.1"
   }
 }

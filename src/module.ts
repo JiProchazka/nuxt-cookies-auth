@@ -1,19 +1,38 @@
-import { defineNuxtModule, addPlugin, createResolver } from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, createResolver, addImports } from "@nuxt/kit"
+import { defu } from "defu"
 
 // Module options TypeScript interface definition
-export interface ModuleOptions {}
+export interface ModuleOptions {
+  apiBaseUrl?: string
+  refreshTokenUrl: string
+}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'my-module',
-    configKey: 'myModule'
+    name: "nuxt-cookies-auth",
+    configKey: "cookiesAuth"
   },
   // Default configuration options of the Nuxt module
-  defaults: {},
-  setup (options, nuxt) {
+  defaults: {
+    apiBaseUrl: "",
+    refreshTokenUrl: "/api/refresh"
+  },
+  setup(options, nuxt) {
+    if (!options.refreshTokenUrl) {
+      throw new Error("nuxt-cookies-auth refreshTokenUrl in nuxt.config.ts is required")
+    }
+
     const resolver = createResolver(import.meta.url)
 
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolver.resolve('./runtime/plugin'))
+    addPlugin(resolver.resolve("./runtime/plugin"))
+
+    addImports({
+      name: "useCookiesAuth",
+      as: "useCookiesAuth",
+      from: resolver.resolve("./runtime/composables/useCookiesAuth")
+    })
+
+    nuxt.options.runtimeConfig.public.cookiesAuth = defu(nuxt.options.runtimeConfig.public.cookiesAuth!, options)
   }
 })
