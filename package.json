@@ -1,9 +1,19 @@
 {
   "name": "nuxt-cookies-auth",
   "version": "1.0.1",
-  "description": "useCookiesAuth composable for Nuxt.js",
+  "description": "useCookiesAuth composable for Nuxt 3",
   "repository": "https://github.com/JiProchazka/nuxt-cookies-auth",
   "license": "MIT",
+  "keywords": [
+    "nuxt",
+    "cookies",
+    "jwt",
+    "refresh",
+    "refresh-token",
+    "access",
+    "access-token",
+    "httpOnly"
+  ],
   "type": "module",
   "exports": {
     ".": {

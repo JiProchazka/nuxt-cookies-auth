@@ -141,3 +141,7 @@ npm run release
 [license-href]: https://npmjs.com/package/nuxt-cookies-auth
 [nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
+
+# Warranty
+
+There is no warranty. Usage is at your own risk.
