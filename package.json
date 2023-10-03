@@ -1,6 +1,6 @@
 {
   "name": "nuxt-cookies-auth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "useCookiesAuth composable for Nuxt.js",
   "repository": "https://github.com/JiProchazka/nuxt-cookies-auth",
   "license": "MIT",
@@ -28,7 +28,8 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.7.4"
+    "@nuxt/kit": "^3.7.4",
+    "defu": "^7.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.18.1",
