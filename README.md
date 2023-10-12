@@ -49,7 +49,9 @@ export default defineNuxtConfig({
   ...
   cookiesAuth: {
     apiBaseUrl: "",
-    refreshTokenUrl: "/api/refresh"
+    refreshTokenUrl: "/api/refresh",
+    redirectOnRefreshTokenExpiration: true,
+    redirectTo: "/login"
   }
   ...
 })
@@ -60,6 +62,8 @@ export default defineNuxtConfig({
 - **refreshTokenUrl**: url expecting `POST` request for refreshing tokens (default: `"/api/refresh"`)
 - **apiBaseUrl**: default API url. For calling Nuxt 3 server api routes leave it blank, otherwise put an absolute server url, eg: `http://test.com/api` (default: _blank_).  
   It sets the `baseURL` to the `useFetch` as well when the `useCookiesAuth` is called.
+- **redirectOnRefreshTokenExpiration**: redirect or not to the `redirectTo` path when the api returns 401 response for the refresh token request (default: _true_)
+- **redirectTo**: path where the app will be redirected when the api returns 401 response for refresh token request (default: _/login_)
 
 [# More detailed example of configuration](#example)
 

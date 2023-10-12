@@ -5,6 +5,8 @@ import { defu } from "defu"
 export interface ModuleOptions {
   apiBaseUrl?: string
   refreshTokenUrl: string
+  redirectOnRefreshTokenExpiration: boolean
+  redirectTo: string
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -15,7 +17,9 @@ export default defineNuxtModule<ModuleOptions>({
   // Default configuration options of the Nuxt module
   defaults: {
     apiBaseUrl: "",
-    refreshTokenUrl: "/api/refresh"
+    refreshTokenUrl: "/api/refresh",
+    redirectOnRefreshTokenExpiration: true,
+    redirectTo: "/login"
   },
   setup(options, nuxt) {
     if (!options.refreshTokenUrl) {
