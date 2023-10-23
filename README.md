@@ -71,12 +71,12 @@ That's it! You can now use `useCookiesAuth` in your Nuxt app ✨
 
 ```js
 // use spread operator for useCookiesAuth composable and useFetch options:
-const { data, error } await useFetch("/api/data", {
+const { data, error } = await useFetch("/api/data", {
   ...useCookiesAuth()
 })
 
 // with body or other parameters:
-const { data, error } await useFetch("/api/data", {
+const { data, error } = await useFetch("/api/data", {
   ...useCookiesAuth(),
   method: "POST",
   query: {
