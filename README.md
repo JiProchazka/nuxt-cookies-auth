@@ -69,6 +69,8 @@ export default defineNuxtConfig({
 
 That's it! You can now use `useCookiesAuth` in your Nuxt app ✨
 
+## Usage
+
 ```js
 // use spread operator for useCookiesAuth composable and useFetch options:
 const { data, error } = await useFetch("/api/data", {
@@ -86,6 +88,28 @@ const { data, error } = await useFetch("/api/data", {
     message: "Hello!"
   }
 })
+```
+
+### Usage with middleware
+
+`useCookiesAuth` internally needs to know from what route the request has been made for redirecting in case of 401 response for refresh token request. But using `useRoute` in nuxt frontend middleware is causing:
+
+```
+[nuxt] Calling `useRoute` within middleware may lead to misleading results. Instead, use the (to, from) arguments passed to the middleware to access the new and old routes.
+```
+
+For such case there us an `useCookiesAuth` overload where you can pass a path from the middleware `from` parameter to bypass this.
+
+```js
+export default defineNuxtRouteMiddleware(async (to, from) => {
+  ...
+  const { data } = useFetch<User>("/api/data", {
+    ...useCookiesAuth(from.path)
+  })
+  ...
+  return
+})
+
 ```
 
 ## Example

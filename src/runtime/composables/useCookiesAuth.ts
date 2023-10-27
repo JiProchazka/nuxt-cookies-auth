@@ -2,17 +2,16 @@ import { appendResponseHeader, sendRedirect, H3Event } from "h3"
 import { FetchContext } from "ofetch"
 import { navigateTo, useRequestEvent, useRequestHeaders, useRuntimeConfig, useRoute } from "#imports"
 import { RuntimeConfig } from "@nuxt/schema"
-import { RouteLocationNormalizedLoaded } from "#vue-router"
 
 const credential = "include" as const
 
-export const useCookiesAuth = () => {
+export const useCookiesAuth = (fromPath: string | undefined = undefined) => {
   const event = useRequestEvent()
   const header = useRequestHeaders()
   const config = useRuntimeConfig()
-  const route = useRoute()
+  const fromPathValue = fromPath || useRoute().path
 
-  const refreshTokenOnResponseErrorHandler = getRefreshTokenOnResponseErrorHandler(event, config, route)
+  const refreshTokenOnResponseErrorHandler = getRefreshTokenOnResponseErrorHandler(event, config, fromPathValue)
 
   return {
     retryStatusCodes: [401],
@@ -48,16 +47,12 @@ export const useCookiesAuth = () => {
   }
 }
 
-function getRefreshTokenOnResponseErrorHandler(
-  event: H3Event,
-  config: RuntimeConfig,
-  route: RouteLocationNormalizedLoaded
-) {
+function getRefreshTokenOnResponseErrorHandler(event: H3Event, config: RuntimeConfig, fromPath: string) {
   if (config.public.cookiesAuth.redirectOnRefreshTokenExpiration) {
     const handler = async (refreshContext: FetchContext) => {
       if (refreshContext.response?.status === 401) {
         if (process.server) {
-          if (route.path !== config.public.cookiesAuth.redirectTo) {
+          if (fromPath !== config.public.cookiesAuth.redirectTo) {
             return await sendRedirect(event, config.public.cookiesAuth.redirectTo)
           }
         } else if (process.client) {
