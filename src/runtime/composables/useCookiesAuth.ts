@@ -4,6 +4,8 @@ import { navigateTo, useRequestEvent, useRequestHeaders, useRuntimeConfig, useRo
 import { RuntimeConfig } from "@nuxt/schema"
 import { RouteLocationNormalizedLoaded } from "#vue-router"
 
+const credential = "include" as const
+
 export const useCookiesAuth = () => {
   const event = useRequestEvent()
   const header = useRequestHeaders()
@@ -16,6 +18,7 @@ export const useCookiesAuth = () => {
     retryStatusCodes: [401],
     retry: 1,
     baseURL: config.public.cookiesAuth.apiBaseUrl,
+    credentials: credential,
     onResponseError: async (context: FetchContext) => {
       if (context.response?.status === 401) {
         const res = await $fetch.raw(config.public.cookiesAuth.refreshTokenUrl, {
@@ -24,6 +27,7 @@ export const useCookiesAuth = () => {
           headers: {
             cookie: header.cookie
           },
+          credentials: credential,
           onResponseError: refreshTokenOnResponseErrorHandler
         })
 
@@ -31,7 +35,7 @@ export const useCookiesAuth = () => {
 
         context.options.headers = {
           ...context.options.headers,
-          cookie: cookies.map((c) => c.split(";")[0]).join(",")
+          cookie: cookies.map((c) => c.split(";")[0]).join(";")
         }
 
         if (event) {
