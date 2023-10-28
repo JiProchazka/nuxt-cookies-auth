@@ -1,6 +1,6 @@
 {
   "name": "nuxt-cookies-auth",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "useCookiesAuth composable for Nuxt 3",
   "repository": "https://github.com/JiProchazka/nuxt-cookies-auth",
   "license": "MIT",
