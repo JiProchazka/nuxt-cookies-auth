@@ -51,12 +51,18 @@ function getRefreshTokenOnResponseErrorHandler(event: H3Event, config: RuntimeCo
   if (config.public.cookiesAuth.redirectOnRefreshTokenExpiration) {
     const handler = async (refreshContext: FetchContext) => {
       if (refreshContext.response?.status === 401) {
-        if (process.server) {
-          if (fromPath !== config.public.cookiesAuth.redirectTo) {
-            return await sendRedirect(event, config.public.cookiesAuth.redirectTo)
-          }
-        } else if (process.client) {
+        if (isExternalApi(config)) {
           await navigateTo(config.public.cookiesAuth.redirectTo)
+        } else {
+          if (refreshContext.response?.status === 401) {
+            if (process.server) {
+              if (fromPath !== config.public.cookiesAuth.redirectTo) {
+                return await sendRedirect(event, config.public.cookiesAuth.redirectTo)
+              }
+            } else if (process.client) {
+              await navigateTo(config.public.cookiesAuth.redirectTo)
+            }
+          }
         }
       }
     }
@@ -64,4 +70,8 @@ function getRefreshTokenOnResponseErrorHandler(event: H3Event, config: RuntimeCo
   } else {
     return undefined
   }
+}
+
+function isExternalApi(config: RuntimeConfig) {
+  return config.public.cookiesAuth.apiBaseUrl.startsWith("http")
 }
